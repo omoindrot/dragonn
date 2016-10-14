@@ -5,7 +5,7 @@ from tutorial_utils import *
 
 single_motif_detection_simulation_parameters = {
     "motif_name": "TAL1_known4",
-    "seq_length": 1000,
+    "seq_length": 100,
     "num_pos": 10000,
     "num_neg": 10000,
     "GC_fraction": 0.4}
@@ -32,16 +32,16 @@ print("X_test shape:", X_test.shape)
 batch_size = 256
 learning_rate = 0.001
 
-x = tf.placeholder(tf.float32, [batch_size, 1, 1000, 4], name='input')
+x = tf.placeholder(tf.float32, [batch_size, 1, 100, 4], name='input')
 y = tf.placeholder(tf.float32, [batch_size, 1], name='output')
 
-net = slim.conv2d(x, 10, [1, 15], scope='conv1_1')
-net = slim.max_pool2d(net, [1, 5], stride=5, scope='pool1')
+net = slim.conv2d(x, 10, [1, 10], scope='conv1')
+net = slim.max_pool2d(net, [1, 2], stride=2, scope='pool1')
 
-net = slim.conv2d(net, 10, [1, 10], scope='conv2_3')
-net = slim.max_pool2d(net, [1, 10], stride=10, scope='pool2')
+net = slim.conv2d(net, 10, [1, 10], scope='conv2')
+net = slim.max_pool2d(net, [1, 2], stride=2, scope='pool2')
 
-net = tf.reshape(net, [batch_size, 20*10])
+net = tf.reshape(net, [batch_size, 25*10])
 net = slim.fully_connected(net, 1, activation_fn=None, scope='fc4')
 
 loss = slim.losses.sigmoid_cross_entropy(net, y)
@@ -53,11 +53,12 @@ logdir = './log'  # Where checkpoints are stored.
 
 with tf.Session() as sess:
     sess.run(tf.initialize_all_variables())
-    for i in range(10000):
+    for i in range(100000):
         samples = random.sample(range(X_train.shape[0]), batch_size)
         X_batch = X_train[samples]
         y_batch = y_train[samples]
 
         l, _ = sess.run([loss, train_op], feed_dict={x: X_batch, y: y_batch})
-        print("Step %03d: loss %f" % (i, l))
+        if i % 100 == 0:
+            print("Step %03d: loss %f" % (i, l))
 
