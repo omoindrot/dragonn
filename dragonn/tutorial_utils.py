@@ -2,18 +2,18 @@ import random
 random.seed(1)
 import inspect
 from collections import namedtuple, defaultdict, OrderedDict
-from matplotlib import pyplot as plt
-from matplotlib.lines import Line2D
+#from matplotlib import pyplot as plt
+#from matplotlib.lines import Line2D
 
 import numpy as np
 np.random.seed(1)
 from sklearn.cross_validation import train_test_split
-import theano
+#import theano
 
 import dragonn.simulations
 from dragonn.utils import get_motif_scores, one_hot_encode
 from dragonn.models import SequenceDNN
-from dragonn.plot import add_letters_to_axis, plot_motif
+#from dragonn.plot import add_letters_to_axis, plot_motif
 
 Data = namedtuple('Data', ['X_train', 'X_valid', 'X_test',
                            'y_train', 'y_valid', 'y_test',

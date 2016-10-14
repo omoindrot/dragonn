@@ -186,3 +186,7 @@ def main():
                          'interpret': main_interpret}
     command, args = parse_args()
     command_functions[command](**args)
+
+if __name__ == '__main__':
+    main()
+
